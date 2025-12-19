@@ -1,6 +1,7 @@
 import type { FastifyPluginCallback } from "fastify";
 import { auth, database } from "./auth.js";
 import fs from "fs";
+import { readFile, rm } from "fs/promises";
 
 const init: FastifyPluginCallback = async (server) => {
     // wait for db to be available
@@ -22,6 +23,15 @@ const init: FastifyPluginCallback = async (server) => {
         };
         setTimeout(inner, 100);
     });
+    let authfile: { email: string; password: string } | undefined = undefined;
+    try {
+        let password = await readFile("config/.pw", { encoding: "utf8" });
+        let email = await readFile("config/.email", { encoding: "utf8" });
+        authfile = { email, password };
+    } catch {
+        server.log.info("No admin to register.");
+        return;
+    }
 
     try {
         const admins = database.prepare("SELECT * FROM user").all();
@@ -31,12 +41,9 @@ const init: FastifyPluginCallback = async (server) => {
                 "If this is unintentional, please delete sqlite.db and reconfigure.",
             );
         }
-        if (
-            admins.length > 0 &&
-            (process.env.ADMIN_USERNAME || process.env.ADMIN_PW)
-        ) {
+        if (admins.length > 0 && authfile?.email && authfile?.password) {
             server.log.warn(
-                "ADMIN_USERNAME and/or ADMIN_PW found in environment even though admin has already been registered.",
+                "Found config/.pw and/or config/.email even though admin already registered.",
             );
             server.log.warn("Refusing to add new administrative account.");
             server.log.warn(
@@ -47,22 +54,21 @@ const init: FastifyPluginCallback = async (server) => {
     } catch {
         server.log.info("Creating administror account.");
         const init = fs.readFileSync("migrations/init.sql", "utf8");
-        database.exec(init);
+        database.run(init);
     }
-    if (process.env.ADMIN_EMAIL && process.env.ADMIN_PW) {
+    if (authfile) {
         auth.api
             .signUpEmail({
                 body: {
                     name: "admin",
-                    email: process.env.ADMIN_EMAIL,
-                    password: process.env.ADMIN_PW,
+                    email: authfile.email.trim(),
+                    password: authfile.password.trim(),
                 },
             })
-            .then((_res) => {
+            .then(async (_res) => {
                 server.log.info("Successfully signed up admin!");
-                server.log.warn(
-                    "For best security, please restart the server WITHOUT the ADMIN_EMAIL and ADMIN_PW environment variables.",
-                );
+                await rm("config/.pw");
+                await rm("config/.email");
             })
             .catch((e) => {
                 server.log.error("Failed to sign up admin!");

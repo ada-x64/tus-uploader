@@ -1,21 +1,9 @@
-# bun-react-template
+To sign up an admin:
+Create a configuration folder. Do the following:
 
-To install dependencies:
-
-```bash
-bun install
+```sh
+echo $MY_PASSWORD > config/.pw
+echo $MY_EMAIL > config/.email
 ```
 
-To start a development server:
-
-```bash
-bun dev
-```
-
-To run for production:
-
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+This will be deleted after registration.
