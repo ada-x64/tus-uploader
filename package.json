@@ -1,30 +1,38 @@
 {
-  "name": "bun-react-template",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "bun --hot src/index.ts",
-    "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
-    "start": "NODE_ENV=production bun src/index.ts",
-    "backend": "bun src/backend.ts"
-  },
-  "dependencies": {
-    "@fastify/one-line-logger": "^2.0.2",
-    "@fastify/static": "^8.3.0",
-    "@tus/file-store": "^2.0.0",
-    "@tus/server": "^2.3.0",
-    "@uppy/core": "^5.2.0",
-    "@uppy/dashboard": "^5.1.0",
-    "@uppy/react": "^5.1.1",
-    "@uppy/tus": "^5.1.0",
-    "fastify": "^5.6.2",
-    "react": "^19",
-    "react-dom": "^19"
-  },
-  "devDependencies": {
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/bun": "latest"
-  }
+    "name": "bun-react-template",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "bun --hot src/index.ts",
+        "build": "bun run build.ts ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
+        "start": "NODE_ENV=production bun src/index.ts",
+        "backend": "bun src/backend.ts"
+    },
+    "dependencies": {
+        "@fastify/one-line-logger": "^2.0.2",
+        "@fastify/static": "^8.3.0",
+        "@nanostores/react": "^1.0.0",
+        "@tus/file-store": "^2.0.0",
+        "@tus/server": "^2.3.0",
+        "@types/better-sqlite3": "^7.6.13",
+        "@uppy/core": "^5.2.0",
+        "@uppy/dashboard": "^5.1.0",
+        "@uppy/react": "^5.1.1",
+        "@uppy/tus": "^5.1.0",
+        "better-auth": "^1.4.7",
+        "better-sqlite3": "^12.5.0",
+        "bun-plugin-tailwind": "^0.1.2",
+        "dotenv": "^17.2.3",
+        "fastify": "^5.6.2",
+        "flowbite-react": "^0.12.14",
+        "react": "^19",
+        "react-dom": "^19",
+        "tailwindcss": "^4.1.18"
+    },
+    "devDependencies": {
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "@types/bun": "latest"
+    }
 }

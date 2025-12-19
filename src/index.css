@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@source "../.flowbite-react/class-list.json";
+@import "flowbite-react/plugin/tailwindcss";
+
+@source "../../.flowbite-react/class-list.json";
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+    padding: 0px;
+    margin: 0px;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--lt-color-gray-500) var(--lt-color-gray-900);
+}
