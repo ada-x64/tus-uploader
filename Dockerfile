@@ -1,0 +1,14 @@
+FROM oven/bun
+
+WORKDIR /app
+
+COPY ./src ./src
+COPY package.json .
+COPY bun.lock .
+
+EXPOSE 3000
+
+RUN bun install
+RUN bun run build
+
+CMD ["bun", "start"]
